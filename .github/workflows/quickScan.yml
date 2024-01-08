@@ -37,7 +37,6 @@ jobs:
 
         echo "[*] Running waybackurls on $env:targetname"
         waybackurls $env:targetname > $outputfile
-        echo $targetname | waybackurls > outputfile.txt
         echo "[+] waybackurls output saved to $outputfile"
 
         echo "[*] Running nuclei on $outputfile"
@@ -49,6 +48,6 @@ jobs:
       with:
         name: scan-results
         path: |
-          ${{ github.workspace }}/outputfile.txt
+          ${{ github.workspace }}/$outputfile
           ${{ github.workspace }}/$nucleioutput
           ${{ github.workspace }}/log_output.txt
