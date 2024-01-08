@@ -26,9 +26,9 @@ jobs:
 
     - name: Run WaybackURLs
       run: |
-        targetname="${{ secrets.TARGET_NAME }}"
+        targetname="cybersigmacs.com"
         outputfile="waybackurls_output.txt"
-        nucleioutput="${{ secrets.TARGET_NAME }}_nucleioutput.txt"
+        nucleioutput="${targetname}_nucleioutput.txt"
 
         echo "[*] Running waybackurls on $targetname"
         waybackurls $targetname > $outputfile
@@ -36,10 +36,19 @@ jobs:
 
     - name: Run Nuclei
       run: |
-        targetname="${{ secrets.TARGET_NAME }}"
+        targetname="your_target_name_here"
         outputfile="waybackurls_output.txt"
         nucleioutput="${targetname}_nucleioutput.txt"
 
         echo "[*] Running nuclei on $outputfile"
         nuclei -l $outputfile --silent -es info -o $nucleioutput | tee -a log_output.txt
         echo "[+] Nuclei output saved to $nucleioutput"
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: scan-results
+        path: |
+          ${{ github.workspace }}/$outputfile
+          ${{ github.workspace }}/$nucleioutput
+          ${{ github.workspace }}/log_output.txt
