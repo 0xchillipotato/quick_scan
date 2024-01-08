@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      targetname: 'cybersigmacs.com'  # Set your default target name here
+      targetname: 'sigmassist.cybersigmacs.in'  # Set your default target name here
 
     steps:
     - name: Checkout Repository
@@ -37,7 +37,7 @@ jobs:
 
         echo "[*] Running waybackurls on $env:targetname"
         waybackurls $env:targetname > $outputfile
-        echo $targetname | waybackurls > $outputfile
+        echo $targetname | waybackurls > outputfile.txt
         echo "[+] waybackurls output saved to $outputfile"
 
         echo "[*] Running nuclei on $outputfile"
@@ -49,6 +49,6 @@ jobs:
       with:
         name: scan-results
         path: |
-          ${{ github.workspace }}/$outputfile
+          ${{ github.workspace }}/outputfile.txt
           ${{ github.workspace }}/$nucleioutput
           ${{ github.workspace }}/log_output.txt
