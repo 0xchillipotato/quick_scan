@@ -37,6 +37,7 @@ jobs:
 
         echo "[*] Running waybackurls on $env:targetname"
         waybackurls $env:targetname > $outputfile
+        echo $targetname | waybackurls > $outputfile
         echo "[+] waybackurls output saved to $outputfile"
 
         echo "[*] Running nuclei on $outputfile"
