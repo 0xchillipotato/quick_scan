@@ -33,10 +33,10 @@ jobs:
     - name: Run WaybackURLs and Nuclei
       run: |
         outputfile="waybackurls_output.txt"
-        nucleioutput="${env.targetname}_nucleioutput.txt"
+        nucleioutput="$env:targetname_nucleioutput.txt"
 
-        echo "[*] Running waybackurls on $env.targetname"
-        waybackurls $env.targetname > $outputfile
+        echo "[*] Running waybackurls on $env:targetname"
+        waybackurls $env:targetname > $outputfile
         echo "[+] waybackurls output saved to $outputfile"
 
         echo "[*] Running nuclei on $outputfile"
