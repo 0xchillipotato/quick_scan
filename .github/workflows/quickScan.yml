@@ -1,0 +1,45 @@
+name: WaybackURLs and Nuclei Scanner
+
+on:
+  push:
+    branches:
+      - main  # Adjust the branch as needed
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest  # You can change this to other supported runners
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: '1.16'
+
+    - name: Install WaybackURLs
+      run: go get github.com/tomnomnom/waybackurls
+
+    - name: Install Nuclei
+      run: go get -u github.com/projectdiscovery/nuclei/cmd/nuclei
+
+    - name: Run WaybackURLs
+      run: |
+        targetname="${{ secrets.TARGET_NAME }}"
+        outputfile="waybackurls_output.txt"
+        nucleioutput="${{ secrets.TARGET_NAME }}_nucleioutput.txt"
+
+        echo "[*] Running waybackurls on $targetname"
+        waybackurls $targetname > $outputfile
+        echo "[+] waybackurls output saved to $outputfile"
+
+    - name: Run Nuclei
+      run: |
+        targetname="${{ secrets.TARGET_NAME }}"
+        outputfile="waybackurls_output.txt"
+        nucleioutput="${targetname}_nucleioutput.txt"
+
+        echo "[*] Running nuclei on $outputfile"
+        nuclei -l $outputfile --silent -es info -o $nucleioutput | tee -a log_output.txt
+        echo "[+] Nuclei output saved to $nucleioutput"
