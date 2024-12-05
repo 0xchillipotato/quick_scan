@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      targetname: 'sigmassist.cybersigmacs.in'  # Set your default target name here
+      targetname: 'sharda.ac.in'  # Set your default target name here
 
     steps:
     - name: Checkout Repository
